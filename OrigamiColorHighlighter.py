@@ -1,4 +1,3 @@
-
 # -*- coding: utf-8 -*-
 import sublime, sublime_plugin
 import os
@@ -13,17 +12,17 @@ import codecs
 try:
     import colors
 except ImportError:
-    colors = __import__("Color Highlighter", fromlist=["colors"]).colors
+    colors = __import__("Origami Color Highlighter", fromlist=["colors"]).colors
 
 
 version = "6.5.4"
 
 hex_letters = "0123456789ABCDEF"
-settings_file = "ColorHighlighter.sublime-settings"
+settings_file = "OrigamiColorHighlighter.sublime-settings"
 low_letters = "abcdefghijklmnopqrstuvwxyz"
 
 
-data_path = "Packages/User/Color Highlighter/"
+data_path = "Packages/User/Origami Color Highlighter/"
 icons_path = data_path + "icons/"
 themes_path = data_path + "themes/"
 
@@ -795,7 +794,7 @@ class Logic:
         if not cs.startswith(themes_path):
             self.set_scheme_view(vo, cs)
 
-    def on_ch_settings_change(self):
+    def on_och_settings_change(self):
         sets = sublime.load_settings(settings_file)
 
         enabled = sets.get("enabled")
@@ -885,8 +884,8 @@ class Logic:
 
         self.settings["color_fmts"] = list(map(get_format, self.settings["color_formats"]))
 
-        sets.clear_on_change("ColorHighlighter")
-        sets.add_on_change("ColorHighlighter", lambda: self.on_ch_settings_change())
+        sets.clear_on_change("OrigamiColorHighlighter")
+        sets.add_on_change("OrigamiColorHighlighter", lambda: self.on_och_settings_change())
 
         sets = sublime.load_settings("Preferences.sublime-settings")
 
@@ -960,7 +959,7 @@ class Logic:
             flags = self.get_regions_ha_flags()
             for s, e, col in res:
                 i += 1
-                st = "mon_CH_ALL_" + str(i)
+                st = "mon_OCH_ALL_" + str(i)
                 if self.settings["ha_style"] != "none":
                     regs.append(st)
                     view.add_regions(st, [sublime.Region(s, e)], region_name(col), "", flags)
@@ -1002,7 +1001,7 @@ class Logic:
             flags = self.get_regions_flags()
             for w, col, _ in words:
                 i += 1
-                st = "mon_CH_" + str(i)
+                st = "mon_OCH_" + str(i)
                 if self.settings["style"] != "none":
                     regs.append(st)
                     view.add_regions(st, [w], region_name(col), "", flags)
@@ -1121,17 +1120,17 @@ class Logic:
 
     def remove_callbacks(self):
         for k in self.views.keys():
-            self.views[k]["view"].settings().clear_on_change("ColorHighlighter")
+            self.views[k]["view"].settings().clear_on_change("OrigamiColorHighlighter")
 
-        sublime.load_settings(settings_file).clear_on_change("ColorHighlighter")
-        sublime.load_settings("Preferences.sublime-settings").clear_on_change("ColorHighlighter")
+        sublime.load_settings(settings_file).clear_on_change("OrigamiColorHighlighter")
+        sublime.load_settings("Preferences.sublime-settings").clear_on_change("OrigamiColorHighlighter")
 
 global_logic = Logic()
 
 
 # commands
 
-class ChSetSetting(sublime_plugin.TextCommand):
+class OchSetSetting(sublime_plugin.TextCommand):
     def run(self, edit, **args):
         sublime.load_settings(settings_file).set(args["setting"], args["value"])
         sublime.save_settings(settings_file)
@@ -1189,59 +1188,6 @@ class ColorPickerCommandImpl(sublime_plugin.TextCommand):
                 continue
             self.view.replace(edit, w, new_col)
 
-class ColorPickerCommand(sublime_plugin.TextCommand):
-    words = []
-    col = None
-    ext = get_ext()
-    output = None
-
-    def _do_run(self):
-        path = os.path.join(full_data_path, "ColorPicker_" + self.ext)
-        popen = subprocess.Popen([path, self.col[1:]], stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=False)
-        out, err = popen.communicate()
-        self.output = out.decode("utf-8")
-        err = err.decode("utf-8")
-        if err is not None and len(err) != 0:
-            print_error("Color Picker error:\n" + err)
-
-
-    if get_version() < 3000:
-        def run(self, edit):
-            run_async(lambda: self._do_run())
-            sublime.set_timeout(lambda: self.do_change_col(), 100)
-
-        def do_change_col(self):
-            output = self.output
-            if output is None:
-                sublime.set_timeout(lambda: self.do_change_col(), 100)
-                return
-            self.call_impl()
-
-    else:
-        def run(self, edit):
-            run_async(lambda: self.do_run())
-
-        def do_run(self):
-            self._do_run()
-            self.call_impl()
-
-
-    def call_impl(self):
-        if self.output is not None and len(self.output) == 9 and self.output != 'CANCEL':
-            self.view.run_command("color_picker_command_impl", {"output": self.output, "col": self.col, "words": "\t".join(list(map(str, self.words)))})
-        self.output = None
-
-
-    def is_enabled(self):
-        self.words = global_logic.get_words(self.view)
-        self.col = None
-        for w, c, v in self.words:
-            if w is not None and not v:
-                _, self.col = w, c
-                return True
-        return False
-
-
 def reg_to_str(reg):
     return "%d,%d" % (reg.begin(), reg.end())
 
@@ -1255,159 +1201,6 @@ def reg_from_str(st):
 def regs_from_str(st):
     ws = st.split(";")
     return [reg_from_str(w) for w in ws]
-
-class ColorConvertCommandImpl(sublime_plugin.TextCommand):
-    def run(self, edit, format = "", formats = "", word = "", words = "", **args):
-        wds = regs_from_str(words or word)
-        fmts = formats.split(";") if formats else ([format] * len(wds))
-        # Replacing changes real regions, so we must offset rest regions
-        # Suppose you have regions [(0, 10), (100, 110)] and then replaced contents of first region
-        # with 'some', which is only 4 chars length
-        # we must move (100,110) region back to 6 (10 - 4) chars
-        offset = 0
-        for wd, fmt in zip(wds, fmts):
-            wdo = sublime.Region(wd.a + offset, wd.b + offset)
-            old_col = self.view.substr(wdo)
-            new_col = convert_format(fmt, old_col)
-            if new_col is None:
-                continue
-            self.view.replace(edit, wdo, new_col)
-            offset = offset + len(new_col) - len(old_col)
-
-class ColorConvertCommand(sublime_plugin.TextCommand):
-    words = []
-    wd = None
-
-    formats = {
-        "named": "white",
-        "rgb": "rgb(255, 255, 255)",
-        "rgba": "rgba(255, 255, 255, 1)",
-        "hsv": "hsv(0, 0%, 100%)",
-        "hsva": "hsva(0, 0%, 100%, 1)",
-        "hsl": "hsl(0, 100%, 100%)",
-        "hsla": "hsla(0, 100%, 100%, 1)"
-    }
-
-    def do_run(self, edit, fmt, txt):
-        psfmt = self.formats.get(fmt)
-        if psfmt is not None:
-            fmt = psfmt
-        if fmt != txt:
-            self.view.run_command("color_convert_command_impl", {"format": fmt, "words": regs_to_str(
-                [wd for wd, c, v in self.words if wd is not None and not v])})
-        self.clear()
-
-    def clear(self):
-        self.words = []
-        self.wd = None
-
-    def run(self, edit):
-        txt = self.view.substr(self.wd)
-        panel = self.view.window().show_input_panel("Format: ", txt, lambda fmt, e=edit, t=txt: self.do_run(e, fmt, t), None, self.clear)
-        panel.sel().add(sublime.Region(0, panel.size()))
-
-    def is_enabled(self):
-        self.words = global_logic.get_words(self.view)
-        self.wd = None
-        for wd, c, v in self.words:
-            if wd is not None and not v:
-                self.wd, _ = wd, c
-                return True
-        return False
-
-class ColorConvertNextCommand(sublime_plugin.TextCommand):
-    words = []
-
-    def clear(self):
-        self.words = []
-
-    def run(self, edit):
-        samples = global_logic.settings["color_fmts"]
-        l = len(samples)
-
-        wds = []
-        fmts = []
-        for w, c, v in self.words:
-            if w is None or v:
-                continue
-            fmt = get_format(self.view.substr(w))
-            val = -1
-            for i in range(0, l):
-                if fmt == samples[i]:
-                    val = i + 1
-                    break
-            if val == l:
-                val = 0
-            if val == -1:
-                continue
-            wds.append(w)
-            fmts.append(global_logic.settings["color_formats"][val])
-        self.view.run_command("color_convert_command_impl", {"formats": ";".join(fmts), "words": regs_to_str(wds)})
-        self.clear()
-
-    def is_enabled(self):
-        self.words = global_logic.get_words(self.view)
-        for w, c, v in self.words:
-            if w is not None and not v:
-                return True
-        return False
-
-
-class ColorConvertPrevCommand(sublime_plugin.TextCommand):
-    words = []
-
-    def clear(self):
-        self.words = []
-
-    def run(self, edit):
-        samples = global_logic.settings["color_fmts"]
-        l = len(samples)
-
-        wds = []
-        fmts = []
-        for w, c, v in self.words:
-            if w is None or v:
-                continue
-            fmt = get_format(self.view.substr(w))
-            val = -1
-            for i in range(0, l):
-                if fmt == samples[i]:
-                    val = i - 1
-                    break
-            if val == -1:
-                val = l - 1
-            if val == -1:
-                continue
-            wds.append(w)
-            fmts.append(global_logic.settings["color_formats"][val])
-        self.view.run_command("color_convert_command_impl", {"formats": ";".join(fmts), "words": regs_to_str(wds)})
-        self.clear()
-
-    def is_enabled(self):
-        self.words = global_logic.get_words(self.view)
-        for w, c, v in self.words:
-            if w is not None and not v:
-                return True
-        return False
-
-class GoToVarDefinitionCommand(sublime_plugin.TextCommand):
-    words = []
-
-    def clear(self):
-        self.words = []
-
-    def run(self, edit):
-        w, c, v = self.words[0]
-        var = global_logic.views[self.view.id()]["vars"][self.view.substr(w)]
-        wnd = self.view.window()
-        view = wnd.open_file(var["file"] + ":%d:%d" % (var["line"], var["pos"] + 1), sublime.ENCODED_POSITION|sublime.TRANSIENT)
-
-    def is_enabled(self):
-        self.words = global_logic.get_words(self.view)
-        for w, c, v in self.words:
-            if w is not None and v:
-                return True
-        return False
 
 # event listener
 
@@ -1460,21 +1253,6 @@ def plugin_loaded():
         os.mkdir(full_icons_path)
     if not os.path.exists(full_themes_path):
         os.mkdir(full_themes_path)
-
-    # Copy binary
-    binary = "ColorPicker_" + get_ext()
-    chflags = stat.S_IXUSR|stat.S_IXGRP|stat.S_IRUSR|stat.S_IRUSR|stat.S_IWUSR|stat.S_IWGRP
-    fpath = os.path.join(full_data_path, binary)
-    if get_version() >= 3000:
-        if not os.path.exists(fpath):
-            data = sublime.load_binary_resource('/'.join(["Packages", "Color Highlighter", "ColorPicker", binary]))
-            if len(data) != 0:
-                write_bin_file(fpath, data)
-                os.chmod(fpath, chflags)
-    else:
-        if not os.path.exists(fpath):
-            shutil.copy(os.path.join(sublime.packages_path(), "Color Highlighter", "ColorPicker", binary), fpath)
-            os.chmod(fpath, chflags)
 
     # restore themes
     restore_broken_schemes()

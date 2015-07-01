@@ -4,18 +4,18 @@
         "children":
         [
             {
-                "caption": "Color Highlighter",
+                "caption": "Origami Color Highlighter",
                 "children":
                 [
                     {
                         "caption": "Enable",
-                        "command": "ch_set_setting",
+                        "command": "och_set_setting",
                         "args": {"setting": "enabled", "value": true},
                         "mnemonic": "E"
                     },
                     {
                         "caption": "Disable",
-                        "command": "ch_set_setting",
+                        "command": "och_set_setting",
                         "args": {"setting": "enabled", "value": false},
                         "mnemonic": "e"
                     },
@@ -26,47 +26,47 @@
                         [
                             {
                                 "caption": "Disabled",
-                                "command": "ch_set_setting",
+                                "command": "och_set_setting",
                                 "args": {"setting": "style", "value": "disabled"}
                             },
                             {
                                 "caption": "None",
-                                "command": "ch_set_setting",
+                                "command": "och_set_setting",
                                 "args": {"setting": "style", "value": "none"}
                             },
                             {
                                 "caption": "Filled",
-                                "command": "ch_set_setting",
+                                "command": "och_set_setting",
                                 "args": {"setting": "style", "value": "filled"}
                             },
                             {
                                 "caption": "Outlined",
-                                "command": "ch_set_setting",
+                                "command": "och_set_setting",
                                 "args": {"setting": "style", "value": "outlined"}
                             },
                             {
                                 "caption": "Underlined (solid)",
-                                "command": "ch_set_setting",
+                                "command": "och_set_setting",
                                 "args": {"setting": "style", "value": "underlined_solid"}
                             },
                             {
                                 "caption": "Underlined (strippled)",
-                                "command": "ch_set_setting",
+                                "command": "och_set_setting",
                                 "args": {"setting": "style", "value": "underlined_strippled"}
                             },
                             {
                                 "caption": "Underlined (squiggly)",
-                                "command": "ch_set_setting",
+                                "command": "och_set_setting",
                                 "args": {"setting": "style", "value": "underlined_squiggly"}
                             },
                             {
                                 "caption": "Show icons",
-                                "command": "ch_set_setting",
+                                "command": "och_set_setting",
                                 "args": {"setting": "icons", "value": true}
                             },
                             {
                                 "caption": "Hide icons",
-                                "command": "ch_set_setting",
+                                "command": "och_set_setting",
                                 "args": {"setting": "icons", "value": false}
                             }
                         ]
@@ -77,65 +77,50 @@
                         [
                             {
                                 "caption": "Disabled",
-                                "command": "ch_set_setting",
+                                "command": "och_set_setting",
                                 "args": {"setting": "ha_style", "value": "disabled"}
                             },
                             {
                                 "caption": "None",
-                                "command": "ch_set_setting",
+                                "command": "och_set_setting",
                                 "args": {"setting": "ha_style", "value": "none"}
                             },
                             {
                                 "caption": "Filled",
-                                "command": "ch_set_setting",
+                                "command": "och_set_setting",
                                 "args": {"setting": "ha_style", "value": "filled"}
                             },
                             {
                                 "caption": "Outlined",
-                                "command": "ch_set_setting",
+                                "command": "och_set_setting",
                                 "args": {"setting": "ha_style", "value": "outlined"}
                             },
                             {
                                 "caption": "Underlined (solid)",
-                                "command": "ch_set_setting",
+                                "command": "och_set_setting",
                                 "args": {"setting": "ha_style", "value": "underlined_solid"}
                             },
                             {
                                 "caption": "Underlined (strippled)",
-                                "command": "ch_set_setting",
+                                "command": "och_set_setting",
                                 "args": {"setting": "ha_style", "value": "underlined_strippled"}
                             },
                             {
                                 "caption": "Underlined (squiggly)",
-                                "command": "ch_set_setting",
+                                "command": "och_set_setting",
                                 "args": {"setting": "ha_style", "value": "underlined_squiggly"}
                             },
                             {
                                 "caption": "Show icons",
-                                "command": "ch_set_setting",
+                                "command": "och_set_setting",
                                 "args": {"setting": "icons_all", "value": true}
                             },
                             {
                                 "caption": "Hide icons",
-                                "command": "ch_set_setting",
+                                "command": "och_set_setting",
                                 "args": {"setting": "icons_all", "value": false}
                             }
                         ]
-                    },
-                    {
-                        "caption": "Restore color scheme",
-                        "command": "restore_color_scheme",
-                        "mnemonic": "R"
-                    },
-                    {
-                        "caption": "Enable default keybindings",
-                        "command": "ch_set_setting",
-                        "args": {"setting": "default_keybindings", "value": true}
-                    },
-                    {
-                        "caption": "Disable default keybindings",
-                        "command": "ch_set_setting",
-                        "args": {"setting": "default_keybindings", "value": false}
                     }
                 ]
             }
@@ -154,55 +139,22 @@
                 "children":
                 [
                     {
-                        "caption": "Color Highlighter",
+                        "caption": "Origami Color Highlighter",
                         "children":
                         [
                             {
                                 "command": "open_file", "args":
                                 {
-                                    "file": "${packages}/Color Highlighter/ColorHighlighter.sublime-settings"
+                                    "file": "${packages}/Origami Color Highlighter/OrigamiColorHighlighter.sublime-settings"
                                 },
                                 "caption": "Settings – Default"
                             },
                             {
                                 "command": "open_file", "args":
                                 {
-                                    "file": "${packages}/User/ColorHighlighter.sublime-settings"
+                                    "file": "${packages}/User/OrigamiColorHighlighter.sublime-settings"
                                 },
                                 "caption": "Settings – User"
-                            },
-                             { "caption": "-" },
-                            {
-                                "command": "open_file",
-                                "args": {
-                                "file": "${packages}/Color Highlighter/Default (OSX).sublime-keymap",
-                                "platform": "OSX"
-                                },
-                                "caption": "Key Bindings – Default"
-                            },
-                            {
-                                "command": "open_file",
-                                "args": {
-                                "file": "${packages}/Color Highlighter/Default.sublime-keymap",
-                                "platform": "Windows"
-                                },
-                                "caption": "Key Bindings – Default"
-                            },
-                            {
-                                "command": "open_file",
-                                "args": {
-                                "file": "${packages}/User/Default (OSX).sublime-keymap",
-                                "platform": "OSX"
-                                },
-                                "caption": "Key Bindings – User"
-                            },
-                            {
-                                "command": "open_file",
-                                "args": {
-                                "file": "${packages}/User/Default (Windows).sublime-keymap",
-                                "platform": "Windows"
-                                },
-                                "caption": "Key Bindings – User"
                             }
                         ]
                     }
