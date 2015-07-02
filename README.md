@@ -2,6 +2,8 @@
 
 _OrigamiColorHighlighter is a plugin for the Sublime Text 2 and 3, which shows Origami colors in code._
 
+Based on the [Origami color palette](http://registry.origami.ft.com/components/o-colors)
+
 ![ ](https://cloud.githubusercontent.com/assets/85783/8474723/10a7b144-20aa-11e5-92a3-af87f88b8885.png)
 
 This package is a fork of [ColorHighlighter](https://github.com/Monnoroch/ColorHighlighter).
@@ -14,7 +16,7 @@ This package is a fork of [ColorHighlighter](https://github.com/Monnoroch/ColorH
 - Alternatively, download the package from [GitHub](https://github.com/Financial-Times/OrigamiColorHighlighter "OrigamiColorHighlighter") into your `Packages` folder
 - For icons install [ImageMagick](http://www.imagemagick.org/)
 
-**Usage :**
+**Usage**
 
 Just click or move the cursor (or multiple cursors) on the color code e.g. "#FFFFFF" and it'll be highlighted with its real color.
 These color formats are currently supported:
@@ -28,7 +30,7 @@ These color formats are currently supported:
   - A float value from 0.0 to 1.0, you can also skip leading zero (like that: .25)
   - A percentage from 0% to 100%.
 
-**Settings :**
+**Settings**
 
 You can choose the highliting style from:
 - "Filled", "outlined", "none" in ST2.
