@@ -1,8 +1,8 @@
-#OrigamiColorHighlighter
+#FT Origami
 
-_OrigamiColorHighlighter is a plugin for the Sublime Text 2 and 3, which shows Origami colors in code._
+_FT Origami is a plugin for the Sublime Text 2 and 3, which shows Origami colors in code._
 
-Based on the [Origami color palette](http://registry.origami.ft.com/components/o-colors)
+Based on [Origami](http://origami.ft.com) itself and the [Origami color palette](http://registry.origami.ft.com/components/o-colors)
 
 ![ ](https://cloud.githubusercontent.com/assets/85783/8474723/10a7b144-20aa-11e5-92a3-af87f88b8885.png)
 
@@ -15,7 +15,7 @@ Based on the [Origami color palette](http://registry.origami.ft.com/components/o
 - **_Recommended_** - Using [Sublime Package Control](https://packagecontrol.io/ "Sublime Package Control")
     - `ctrl+shft+p` then select `Package Control: Install Package`
     - install `Origami Color Highlighter`
-- Alternatively, download the package from [GitHub](https://github.com/Financial-Times/OrigamiColorHighlighter "OrigamiColorHighlighter") into your `Packages` folder
+- Alternatively, download the package from [GitHub](https://github.com/Financial-Times/FTOrigamiSublime) into your `Packages` folder
 - For icons install [ImageMagick](http://www.imagemagick.org/)
 
 **Usage**
@@ -42,6 +42,6 @@ You can also turn on highlighting all colors at once. This mode has own highligh
 
 You can also enable icons, which will be shown in the gutter of a file (ST3 only).
 
-You can also set OrigamiColorHighlighter to use Hexadecimal ARGB instead of RGBA.
+You can also set the color highlighter to use Hexadecimal ARGB instead of RGBA.
 
 You can always turn off default keybindings via main menu.
