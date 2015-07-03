@@ -6,7 +6,9 @@ Based on the [Origami color palette](http://registry.origami.ft.com/components/o
 
 ![ ](https://cloud.githubusercontent.com/assets/85783/8474723/10a7b144-20aa-11e5-92a3-af87f88b8885.png)
 
-This package is a fork of [ColorHighlighter](https://github.com/Monnoroch/ColorHighlighter).
+![ ](https://cloud.githubusercontent.com/assets/85783/8502190/bc7f1976-21a4-11e5-9c7c-d5666d4d853a.gif)
+
+<small>This package is a fork of [ColorHighlighter](https://github.com/Monnoroch/ColorHighlighter).</small>
 
 **Installation :**
 
@@ -24,7 +26,7 @@ These color formats are currently supported:
 - Hexadecimal RGBA ("#FFFFFFFF").
 - Hexadecimal ARGB ("#FFFFFFFF") (if you set the setting argb to true).
 - Named colors like "green", "black" and many others.
-- Less/sass/scss/stylus variables (supports importing from another files).
+- Less/Sass/SCSS/Stylus variables (supports importing from another files).
 - [VAL, VAL, VAL] and [VAL, VAL, VAL, VAL] when editing *.sublime-theme files. Where VAL can be the following:
   - An integer: from 0 to 255.
   - A float value from 0.0 to 1.0, you can also skip leading zero (like that: .25)

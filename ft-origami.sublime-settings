@@ -18,5 +18,5 @@
         "hsl(0, 100%, 100%)",
         "hsla(0, 100%, 100%, 1.0)"
     ],
-    "file_exts": [".scss", ".html", ".js", ".sublime-settings", ".tmTheme", ".jsx", ".mustache", ".md", ".mkd", ".css"]
+    "file_exts": [".scss", ".html", ".js", ".sublime-settings", ".tmTheme", ".jsx", ".mustache", ".md", ".mkd", ".css", ".py"]
 }

@@ -4,18 +4,18 @@
         "children":
         [
             {
-                "caption": "Origami Color Highlighter",
+                "caption": "FT Origami",
                 "children":
                 [
                     {
                         "caption": "Enable",
-                        "command": "och_set_setting",
+                        "command": "fto_set_setting",
                         "args": {"setting": "enabled", "value": true},
                         "mnemonic": "E"
                     },
                     {
                         "caption": "Disable",
-                        "command": "och_set_setting",
+                        "command": "fto_set_setting",
                         "args": {"setting": "enabled", "value": false},
                         "mnemonic": "e"
                     },
@@ -26,47 +26,47 @@
                         [
                             {
                                 "caption": "Disabled",
-                                "command": "och_set_setting",
+                                "command": "fto_set_setting",
                                 "args": {"setting": "style", "value": "disabled"}
                             },
                             {
                                 "caption": "None",
-                                "command": "och_set_setting",
+                                "command": "fto_set_setting",
                                 "args": {"setting": "style", "value": "none"}
                             },
                             {
                                 "caption": "Filled",
-                                "command": "och_set_setting",
+                                "command": "fto_set_setting",
                                 "args": {"setting": "style", "value": "filled"}
                             },
                             {
                                 "caption": "Outlined",
-                                "command": "och_set_setting",
+                                "command": "fto_set_setting",
                                 "args": {"setting": "style", "value": "outlined"}
                             },
                             {
                                 "caption": "Underlined (solid)",
-                                "command": "och_set_setting",
+                                "command": "fto_set_setting",
                                 "args": {"setting": "style", "value": "underlined_solid"}
                             },
                             {
                                 "caption": "Underlined (strippled)",
-                                "command": "och_set_setting",
+                                "command": "fto_set_setting",
                                 "args": {"setting": "style", "value": "underlined_strippled"}
                             },
                             {
                                 "caption": "Underlined (squiggly)",
-                                "command": "och_set_setting",
+                                "command": "fto_set_setting",
                                 "args": {"setting": "style", "value": "underlined_squiggly"}
                             },
                             {
                                 "caption": "Show icons",
-                                "command": "och_set_setting",
+                                "command": "fto_set_setting",
                                 "args": {"setting": "icons", "value": true}
                             },
                             {
                                 "caption": "Hide icons",
-                                "command": "och_set_setting",
+                                "command": "fto_set_setting",
                                 "args": {"setting": "icons", "value": false}
                             }
                         ]
@@ -77,47 +77,47 @@
                         [
                             {
                                 "caption": "Disabled",
-                                "command": "och_set_setting",
+                                "command": "fto_set_setting",
                                 "args": {"setting": "ha_style", "value": "disabled"}
                             },
                             {
                                 "caption": "None",
-                                "command": "och_set_setting",
+                                "command": "fto_set_setting",
                                 "args": {"setting": "ha_style", "value": "none"}
                             },
                             {
                                 "caption": "Filled",
-                                "command": "och_set_setting",
+                                "command": "fto_set_setting",
                                 "args": {"setting": "ha_style", "value": "filled"}
                             },
                             {
                                 "caption": "Outlined",
-                                "command": "och_set_setting",
+                                "command": "fto_set_setting",
                                 "args": {"setting": "ha_style", "value": "outlined"}
                             },
                             {
                                 "caption": "Underlined (solid)",
-                                "command": "och_set_setting",
+                                "command": "fto_set_setting",
                                 "args": {"setting": "ha_style", "value": "underlined_solid"}
                             },
                             {
                                 "caption": "Underlined (strippled)",
-                                "command": "och_set_setting",
+                                "command": "fto_set_setting",
                                 "args": {"setting": "ha_style", "value": "underlined_strippled"}
                             },
                             {
                                 "caption": "Underlined (squiggly)",
-                                "command": "och_set_setting",
+                                "command": "fto_set_setting",
                                 "args": {"setting": "ha_style", "value": "underlined_squiggly"}
                             },
                             {
                                 "caption": "Show icons",
-                                "command": "och_set_setting",
+                                "command": "fto_set_setting",
                                 "args": {"setting": "icons_all", "value": true}
                             },
                             {
                                 "caption": "Hide icons",
-                                "command": "och_set_setting",
+                                "command": "fto_set_setting",
                                 "args": {"setting": "icons_all", "value": false}
                             }
                         ]
@@ -139,20 +139,20 @@
                 "children":
                 [
                     {
-                        "caption": "Origami Color Highlighter",
+                        "caption": "FT Origami",
                         "children":
                         [
                             {
                                 "command": "open_file", "args":
                                 {
-                                    "file": "${packages}/Origami Color Highlighter/OrigamiColorHighlighter.sublime-settings"
+                                    "file": "${packages}/FT Origami/ft-origami.sublime-settings"
                                 },
                                 "caption": "Settings – Default"
                             },
                             {
                                 "command": "open_file", "args":
                                 {
-                                    "file": "${packages}/User/OrigamiColorHighlighter.sublime-settings"
+                                    "file": "${packages}/User/ft-origami.sublime-settings"
                                 },
                                 "caption": "Settings – User"
                             }

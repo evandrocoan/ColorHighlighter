@@ -1,0 +1,12 @@
+{
+    "scope": "text.html - source - meta.tag, punctuation.definition.tag.begin",
+    "tab_completion": true,
+    "completions":
+    [
+        { "trigger": "o-ctm", "tab_trigger": "octm", "contents": "var cutsTheMustard = ('querySelector' in document && 'localStorage' in window && 'addEventListener' in window);" },
+        { "trigger": "o-css", "contents": "<link rel=\"stylesheet\" href=\"//build.origami.ft.com/bundles/css?modules=o-fonts@^1.6.7,o-ft-icons@^2.3.6,${1:o-module}@^${2:1.0.0},${3:o-module}@^${4:1.0.0}\" />" },
+        { "trigger": "o-js", "contents": "<script src=\"//build.origami.ft.com/bundles/js?modules=${1:o-module}@^${2:1.0.0},${3:o-module}@^${4:1.0.0}\" async></script>" },
+        { "trigger": "o-polyfill", "contents": "<script src=\"//polyfill.webservices.ft.com/v1/polyfill.min.js\"></script>" },
+        { "trigger": "o-image", "contents": "<img alt=\"${1:Image description}\" src=\"//image.webservices.ft.com/v1/images/raw/${2:http://url.com/to/your/image.ext}?${3:width=${4:150}}${5:&format=${6:jpg|png|svg}}&source=${7:your-app}\" />" }
+    ]
+}

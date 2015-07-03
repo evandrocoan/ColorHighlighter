@@ -12,17 +12,17 @@ import codecs
 try:
     import colors
 except ImportError:
-    colors = __import__("Origami Color Highlighter", fromlist=["colors"]).colors
+    colors = __import__("FT Origami", fromlist=["colors"]).colors
 
 
 version = "6.5.4"
 
 hex_letters = "0123456789ABCDEF"
-settings_file = "OrigamiColorHighlighter.sublime-settings"
+settings_file = "ft-origami.sublime-settings"
 low_letters = "abcdefghijklmnopqrstuvwxyz"
 
 
-data_path = "Packages/User/Origami Color Highlighter/"
+data_path = "Packages/User/FT Origami/"
 icons_path = data_path + "icons/"
 themes_path = data_path + "themes/"
 
@@ -794,7 +794,7 @@ class Logic:
         if not cs.startswith(themes_path):
             self.set_scheme_view(vo, cs)
 
-    def on_och_settings_change(self):
+    def on_fto_settings_change(self):
         sets = sublime.load_settings(settings_file)
 
         enabled = sets.get("enabled")
@@ -885,14 +885,14 @@ class Logic:
         self.settings["color_fmts"] = list(map(get_format, self.settings["color_formats"]))
 
         sets.clear_on_change("OrigamiColorHighlighter")
-        sets.add_on_change("OrigamiColorHighlighter", lambda: self.on_och_settings_change())
+        sets.add_on_change("OrigamiColorHighlighter", lambda: self.on_fto_settings_change())
 
         sets = sublime.load_settings("Preferences.sublime-settings")
 
         self.settings["color_scheme"] = sets.get("color_scheme")
 
-        sets.clear_on_change("ColorHighlighter")
-        sets.add_on_change("ColorHighlighter", lambda: self.on_g_settings_change())
+        sets.clear_on_change("OrigamiColorHighlighter")
+        sets.add_on_change("OrigamiColorHighlighter", lambda: self.on_g_settings_change())
 
         self.inited = True
 
@@ -911,7 +911,7 @@ class Logic:
             return False # ST2 hack
         htmlGen = self.get_html_gen(cs)
         self.views[view.id()] = {"view": view, "vars": {}, "regions": [], "hl_all_regions": [], "settings" : {"color_scheme": cs}, "html_gen": htmlGen}
-        view.settings().add_on_change("ColorHighlighter", lambda v=view: self.on_settings_change_view(v))
+        view.settings().add_on_change("OrigamiColorHighlighter", lambda v=view: self.on_settings_change_view(v))
         htmlGen.update_view(view)
         return True
 
@@ -927,7 +927,7 @@ class Logic:
 
     def on_close(self, view):
         if view.id() in self.views.keys():
-            view.settings().clear_on_change("ColorHighlighter")
+            view.settings().clear_on_change("OrigamiColorHighlighter")
             del(self.views[view.id()])
 
     def on_pre_save(self, view):
@@ -959,7 +959,7 @@ class Logic:
             flags = self.get_regions_ha_flags()
             for s, e, col in res:
                 i += 1
-                st = "mon_OCH_ALL_" + str(i)
+                st = "mon_FTO_ALL_" + str(i)
                 if self.settings["ha_style"] != "none":
                     regs.append(st)
                     view.add_regions(st, [sublime.Region(s, e)], region_name(col), "", flags)
@@ -1001,7 +1001,7 @@ class Logic:
             flags = self.get_regions_flags()
             for w, col, _ in words:
                 i += 1
-                st = "mon_OCH_" + str(i)
+                st = "mon_FTO_" + str(i)
                 if self.settings["style"] != "none":
                     regs.append(st)
                     view.add_regions(st, [w], region_name(col), "", flags)
@@ -1130,7 +1130,7 @@ global_logic = Logic()
 
 # commands
 
-class OchSetSetting(sublime_plugin.TextCommand):
+class FtoSetSetting(sublime_plugin.TextCommand):
     def run(self, edit, **args):
         sublime.load_settings(settings_file).set(args["setting"], args["value"])
         sublime.save_settings(settings_file)
