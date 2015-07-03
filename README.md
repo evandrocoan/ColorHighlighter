@@ -1,4 +1,4 @@
-#FT Origami
+# FT Origami
 
 _FT Origami is a plugin for the Sublime Text 2 and 3, which shows Origami colors in code._
 
@@ -10,7 +10,7 @@ Based on [Origami](http://origami.ft.com) itself and the [Origami color palette]
 
 <small>This package is a fork of [ColorHighlighter](https://github.com/Monnoroch/ColorHighlighter).</small>
 
-**Installation :**
+**Installation**
 
 - **_Recommended_** - Using [Sublime Package Control](https://packagecontrol.io/ "Sublime Package Control")
     - `ctrl+shft+p` then select `Package Control: Install Package`
