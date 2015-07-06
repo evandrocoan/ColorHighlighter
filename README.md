@@ -1,6 +1,6 @@
 # FT Origami
 
-_FT Origami is a plugin for the editor [Sublime Text](http://www.sublimetext.com/) 2 and 3, which shows Origami colors in code._
+_FT Origami is a plugin for the editor [Sublime Text](http://www.sublimetext.com/) 2 and 3, which shows Origami colors in code and adds code autocomplete for commonly used snippets._
 
 Based on [Origami](http://origami.ft.com) itself and the [Origami color palette](http://registry.origami.ft.com/components/o-colors)
 
