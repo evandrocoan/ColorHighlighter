@@ -10,7 +10,7 @@ Based on [Origami](http://origami.ft.com) itself and the [Origami color palette]
 
 <small>This package is a fork of [ColorHighlighter](https://github.com/Monnoroch/ColorHighlighter).</small>
 
-**Installation**
+## Installation
 
 - **_Recommended_** - Using [Sublime Package Control](https://packagecontrol.io/ "Sublime Package Control")
     - `ctrl+shft+p` then select `Package Control: Install Package`
@@ -18,7 +18,7 @@ Based on [Origami](http://origami.ft.com) itself and the [Origami color palette]
 - Alternatively, download the package from [GitHub](https://github.com/Financial-Times/FTOrigamiSublime) into your `Packages` folder
 - For icons install [ImageMagick](http://www.imagemagick.org/)
 
-**Usage**
+## Usage
 
 Just click or move the cursor (or multiple cursors) on the color code e.g. "#FFFFFF" and it'll be highlighted with its real color.
 These color formats are currently supported:
@@ -32,7 +32,7 @@ These color formats are currently supported:
   - A float value from 0.0 to 1.0, you can also skip leading zero (like that: .25)
   - A percentage from 0% to 100%.
 
-**Settings**
+## Settings
 
 You can choose the highliting style from:
 - "Filled", "outlined", "none" in ST2.
