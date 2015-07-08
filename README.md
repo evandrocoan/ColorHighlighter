@@ -14,7 +14,7 @@ Based on [Origami](http://origami.ft.com) itself and the [Origami color palette]
 
 - **_Recommended_** - Using [Sublime Package Control](https://packagecontrol.io/ "Sublime Package Control")
     - `ctrl+shft+p` then select `Package Control: Install Package`
-    - install `Origami Color Highlighter`
+    - install `FT Origami`
 - Alternatively, download the package from [GitHub](https://github.com/Financial-Times/FTOrigamiSublime) into your `Packages` folder
 - For icons install [ImageMagick](http://www.imagemagick.org/)
 
