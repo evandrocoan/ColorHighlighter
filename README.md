@@ -21,7 +21,9 @@ Based on [Origami](http://origami.ft.com) itself and the [Origami color palette]
 ## Usage
 
 Just click or move the cursor (or multiple cursors) on the color code e.g. "#FFFFFF" and it'll be highlighted with its real color.
+
 These color formats are currently supported:
+
 - All CSS color formats.
 - Hexadecimal RGBA ("#FFFFFFFF").
 - Hexadecimal ARGB ("#FFFFFFFF") (if you set the setting argb to true).
@@ -35,6 +37,7 @@ These color formats are currently supported:
 ## Settings
 
 You can choose the highliting style from:
+
 - "Filled", "outlined", "none" in ST2.
 - "Filled", "outlined", "none", "underlined" (solid, strippled, squiggly) in ST3.
 
