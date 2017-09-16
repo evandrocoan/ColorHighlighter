@@ -1,4 +1,6 @@
-#ColorHighlighter
+# ColorHighlighter
+
+[![Donate](https://img.shields.io/badge/Donate-PayPal-green.svg)](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=C2L27SE4YDFAC)
 
 _ColorHighlighter is a plugin for the Sublime Text 2 and 3, which unobtrusively previews color values by underlaying the selected hex codes in different styles, coloring text or gutter icons. Also, plugin adds color picker, color format converter and less/sass/styl variables navigation to easily modify colors._
 
@@ -38,7 +40,7 @@ There is a deprecated but left for compatibility setting `color_variables_file`,
 
 **Settings :**
 
-You can choose the highliting style from:
+You can choose the highlighting style from:
 - "Filled", "outlined", "none", "colored text" in ST2.
 - "Filled", "outlined", "none", "underlined" (solid, strippled, squiggly), "colored text" in ST3.
 
@@ -57,8 +59,14 @@ Just put the cursor (or multiple cursors) on the color code and select "Choose c
 Just put the cursor (or multiple cursors) on the color code and select "Convert color" in context menu (or press <kbd>Ctrl</kbd>+<kbd>Shift</kbd>+<kbd>A</kbd>). Input a color format to use and press enter. The full list of all color formats is in the plugins settings file.
 Format can be any format supported by this plugin, for example if you convert "rgb(255,255,255)" into format "hsv", you'll get "hsv(0, 0%, 100%)". Also works with named colors and variables.
 
-Also, there is a Prev/Next color commands, triggered by <kbd>Ctrl</kbd>+<kbd>Shift</kbd>+<kbd>,</kbd> and <kbd>Ctrl</kbd>+<kbd>Shift</kbd>+<kbd>.</kbd> respectively to choose previous or next color format.
+Also, there are Prev and Next color commands, triggered by <kbd>Ctrl</kbd>+<kbd>Shift</kbd>+<kbd>,</kbd> and <kbd>Ctrl</kbd>+<kbd>Shift</kbd>+<kbd>.</kbd> respectively to choose previous or next color format.
 
 **Less/sass/scss/stylus variables navigation:**
 
 Just put cursor on a variable, right click on it and press "Go to variable definition" and the plugin will open it. There is also a shortcut <kbd>Ctrl</kbd>+<kbd>Alt</kbd>+<kbd>D</kbd>.
+
+**Donate**
+
+Thank you guys for all your support, I couldn't have done it wihout your contributions. Every little bit helps!
+
+[![paypal](https://www.paypalobjects.com/en_US/i/btn/btn_donateCC_LG.gif)](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=C2L27SE4YDFAC)
