@@ -995,10 +995,9 @@ class ColorHighlighterView:
     # settings
 
     def _on_settings_change(self, key, old, new):
-        pass
-        # if key == "color_scheme" and new is not None and self.color_scheme != new and new.find(plugin_name) == -1:
-        #     self.color_scheme = new
-        #     self._on_update_cs(new)
+        if key == "color_scheme" and isinstance( new, str ) and self.color_scheme != new and new.find(plugin_name) == -1:
+            self.color_scheme = new
+            self._on_update_cs(new)
 
     # color API
 
