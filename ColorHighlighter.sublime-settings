@@ -20,11 +20,11 @@
             "enabled": true,
             "color_highlighters": {
                 "color_scheme": {
-                    "enabled": false,
-                    "highlight_style": "text"
+                    "enabled": true,
+                    "highlight_style": "filled"
                 },
                 "gutter_icons": {
-                    "enabled": true,
+                    "enabled": false,
                     "icon_style": "circle"
                 },
                 "phantoms": {
@@ -50,7 +50,7 @@
         }
     },
     "default_keybindings": true,
-    "file_extensions": [".css", ".less", ".scss", ".sass", ".styl"],
+    "file_extensions": [".css", ".sass", ".scss", ".less", ".styl", ".html", ".js", ".sublime-settings", ".tmTheme", ".stTheme", ".erb", ".haml", ".hidden-tmTheme", ".ini"],
     "icon_factory": {
         "convert_command": "convert",
         "convert_timeout": 5
