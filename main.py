@@ -1,6 +1,7 @@
 """The main program."""
 
 import os
+import shutil
 import stat
 
 import sublime  # pylint: disable=import-error
@@ -8,7 +9,6 @@ import sublime  # pylint: disable=import-error
 import sublime_plugin  # pylint: disable=import-error
 
 try:
-    from .debug import DEBUG
     from . import st_helper
     from . import path
     from .color_converter import ColorConverter
@@ -26,7 +26,6 @@ try:
     from .load_resource import load_binary_resource, get_binary_resource_size
     from .regex_compiler import compile_regex
 except ValueError:
-    from debug import DEBUG
     import st_helper
     import path
     from color_converter import ColorConverter
@@ -78,16 +77,17 @@ def set_fake_color_scheme(view, color_scheme, fake_color_scheme):
     - color_scheme -- current color scheme.
     - fake_color_scheme -- a fake color scheme for the current color scheme.
     """
+    debug = Settings(sublime.load_settings(COLOR_HIGHLIGHTER_SETTINGS_NAME)).debug
     fake_color_scheme_path = path.fake_color_scheme_path(color_scheme, path.ABSOLUTE)
     if not os.path.exists(fake_color_scheme_path):
-        if DEBUG:
+        if debug:
             print("ColorHighlighter: action=copy_color_scheme scheme=%s fake_scheme=%s"
                   % (color_scheme, fake_color_scheme))
         copy_resource(color_scheme, fake_color_scheme_path)
 
     settings = view.settings()
     if settings.get("color_scheme", None) != fake_color_scheme:
-        if DEBUG:
+        if debug:
             print("ColorHighlighter: action=set_view_color_scheme scheme=%s" % (fake_color_scheme))
         settings.set("color_scheme", fake_color_scheme)
 
@@ -101,11 +101,20 @@ class ColorHighlighterComponents(object):
         self._color_searcher = None
         self._fake_color_scheme_data = None
         self._color_scheme_builder = None
-        self._icon_factory = None
         self._color_selection_event_listener = None
         self._color_highlighters = {}
         for name in self._settings.search_colors_in.color_searcher_names:
             self._color_highlighters[name] = {}
+        self._icon_factory = None
+        color_searchers = self._settings.search_colors_in
+        if _gutter_icons_color_highlighter_enabled(self._settings):
+            self._icon_factory = self.provide_icon_factory()
+            if not self._icon_factory.check():
+                print("Highlighting colors with gutter icons is not supported with current ImageMagick setup. " +
+                      "Try configuring the \"icon_factory setting\"")
+                color_searchers.selection.color_highlighters.gutter_icons.enabled = False
+                color_searchers.all_content.color_highlighters.gutter_icons.enabled = False
+                color_searchers.hover.color_highlighters.gutter_icons.enabled = False
 
     def provide_settings(self):
         """Provide the plugin settings."""
@@ -188,8 +197,12 @@ class ColorHighlighterComponents(object):
         if self._fake_color_scheme_data is not None:
             return self._fake_color_scheme_data
 
-        self._fake_color_scheme_data = parse_color_scheme(self.provide_color_scheme())
+        self._fake_color_scheme_data = parse_color_scheme(self.provide_color_scheme(), self._settings.debug)
         return self._fake_color_scheme_data
+
+    def provide_fake_color_scheme_writer(self):
+        """Provide a fake color scheme data."""
+        return self.provide_fake_color_scheme_data()[2]
 
     def provide_fake_color_scheme(self):
         """Provide a fake color scheme."""
@@ -206,9 +219,10 @@ class ColorHighlighterComponents(object):
         if self._color_scheme_builder is not None:
             return self._color_scheme_builder
 
-        _, color_scheme_data, color_scheme_writer = self.provide_fake_color_scheme_data()
+        _, color_scheme_data, _ = self.provide_fake_color_scheme_data()
         self._color_scheme_builder = ColorSchemeBuilder(
-            color_scheme_data, color_scheme_writer, self._settings.experimental.asynchronosly_update_color_scheme)
+            color_scheme_data, self.provide_fake_color_scheme_writer(),
+            self._settings.experimental.asynchronosly_update_color_scheme)
         return self._color_scheme_builder
 
     def provide_icon_factory(self):
@@ -219,7 +233,7 @@ class ColorHighlighterComponents(object):
         settings = self._settings.icon_factory
         self._icon_factory = IconFactory(
             path.icons_path(path.ABSOLUTE), path.icons_path(path.RELATIVE),
-            settings.convert_command, settings.convert_timeout)
+            settings.convert_command, settings.convert_timeout, self._settings.debug)
         return self._icon_factory
 
     def provide_color_highlighter(self, view, searcher):
@@ -238,12 +252,14 @@ class ColorHighlighterComponents(object):
         if searcher.color_highlighters.color_scheme.enabled:
             color_highlighters.append(ColorSchemeColorHighlighter(
                 view, searcher.color_highlighters.color_scheme.highlight_style, self.provide_color_scheme_builder(),
-                searcher.name))
+                searcher.name, self._settings.debug))
         if searcher.color_highlighters.gutter_icons.enabled:
+            self.provide_fake_color_scheme_writer().fix_color_scheme_for_gutter_colors()
             color_highlighters.append(GutterIconsColorHighlighter(
-                view, searcher.color_highlighters.gutter_icons.icon_style, self.provide_icon_factory(), searcher.name))
+                view, searcher.color_highlighters.gutter_icons.icon_style, self.provide_icon_factory(), searcher.name,
+                self._settings.debug))
         if searcher.color_highlighters.phantoms.enabled:
-            color_highlighters.append(PhantomColorHighlighter(view, searcher.name))
+            color_highlighters.append(PhantomColorHighlighter(view, searcher.name, self._settings.debug))
         color_highlighter = CachingColorHighlighter(color_highlighters)
         self._color_highlighters[searcher.name][view.id()] = color_highlighter
         return color_highlighter
@@ -266,6 +282,17 @@ def _color_scheme_color_highlighter_enabled(settings):
         (selection_searcher.enabled and selection_searcher.color_highlighters.color_scheme.enabled) or
         (all_content_searcher.enabled and all_content_searcher.color_highlighters.color_scheme.enabled) or
         (hover_seacher.enabled and hover_seacher.color_highlighters.color_scheme.enabled))
+
+
+def _gutter_icons_color_highlighter_enabled(settings):
+    color_searchers = settings.search_colors_in
+    selection_searcher = color_searchers.selection
+    all_content_searcher = color_searchers.all_content
+    hover_seacher = color_searchers.hover
+    return (
+        (selection_searcher.enabled and selection_searcher.color_highlighters.gutter_icons.enabled) or
+        (all_content_searcher.enabled and all_content_searcher.color_highlighters.gutter_icons.enabled) or
+        (hover_seacher.enabled and hover_seacher.color_highlighters.gutter_icons.enabled))
 
 
 class ColorHighlighterPlugin(object):
@@ -390,14 +417,14 @@ class ColorSelection(object):
 
     def on_modified(self):
         """on_modified event."""
-        self._color_hover_listener.on_modified()
         self._content_listener.on_modified()
         self._color_selection_listener.on_modified()
+        self._color_hover_listener.on_modified()
 
     def clear_all(self):
         """Clean up all highlightings."""
-        self._selection_color_highlighter.clear_all()
         self._content_color_highlighter.clear_all()
+        self._selection_color_highlighter.clear_all()
         self._hover_color_highlighter.clear_all()
 
 
@@ -473,16 +500,18 @@ class ColorSelectionEventListener(object):
 
     def _init_view(self, view):
         view_id = view.id()
-        if view_id not in self._view_listeners:
-            if not self._supported_file_extension(view):
-                return False
-            self._view_listeners[view_id] = ColorHighlighterPlugin.components.provide_color_selection(view)
-            if _color_scheme_color_highlighter_enabled(ColorHighlighterPlugin.components.provide_settings()):
-                color_scheme = ColorHighlighterPlugin.components.provide_color_scheme()
-                # Do not change the color scheme on widgets.
-                if view.settings().get("color_scheme", None) == color_scheme:
-                    set_fake_color_scheme(
-                        view, color_scheme, ColorHighlighterPlugin.components.provide_fake_color_scheme())
+        if view_id in self._view_listeners:
+            return True
+
+        if not self._supported_file_extension(view):
+            return False
+        self._view_listeners[view_id] = ColorHighlighterPlugin.components.provide_color_selection(view)
+        if _color_scheme_color_highlighter_enabled(ColorHighlighterPlugin.components.provide_settings()):
+            color_scheme = ColorHighlighterPlugin.components.provide_color_scheme()
+            # Do not change the color scheme on widgets.
+            if not view.settings().get("color_scheme", None).endswith(".stTheme"):
+                set_fake_color_scheme(
+                    view, color_scheme, ColorHighlighterPlugin.components.provide_fake_color_scheme())
         return True
 
     def _supported_file_extension(self, view):
@@ -569,16 +598,20 @@ class ColorSelectionEventSublimeListener(sublime_plugin.EventListener):
 
 def _remove_old_user_settings():
     settings = sublime.load_settings(COLOR_HIGHLIGHTER_SETTINGS_NAME)  # pylint: disable=assignment-from-none
-    if settings.get("channels", None) is not None:
-        user_settings_path = os.path.join(path.packages_path(path.ABSOLUTE), "User", COLOR_HIGHLIGHTER_SETTINGS_NAME)
-        if DEBUG:
-            print("ColorHighlighter: action=remove_old_settings")
-        os.remove(user_settings_path)
+    if settings.get("channels", None) is None:
+        return
+    user_settings_path = os.path.join(path.packages_path(path.ABSOLUTE), "User", COLOR_HIGHLIGHTER_SETTINGS_NAME)
+    os.remove(user_settings_path)
+    shutil.rmtree(path.data_path(path.ABSOLUTE))
+    if Settings(sublime.load_settings(COLOR_HIGHLIGHTER_SETTINGS_NAME)).debug:
+        print("ColorHighlighter: action=remove_old_settings")
 
 
 def plugin_loaded():  # noqa: D401
     """Called when plugin has finished loading."""
-    if DEBUG:
+    _remove_old_user_settings()
+    debug = Settings(sublime.load_settings(COLOR_HIGHLIGHTER_SETTINGS_NAME)).debug
+    if debug:
         print("ColorHighlighter: action=start st=%s" % (st_helper.st_version()))
 
     def _create_if_not_exists(path_to_create):
@@ -601,13 +634,12 @@ def plugin_loaded():  # noqa: D401
     _create_if_not_exists(path.themes_path(path.ABSOLUTE))
     _create_if_not_exists(path.color_picker_path(path.ABSOLUTE))
     _init_color_picker()
-    _remove_old_user_settings()
     ColorHighlighterPlugin.init()
 
 
 def plugin_unloaded():  # noqa: D401
     """Called when plugin is getting unloaded."""
-    if DEBUG:
+    if Settings(sublime.load_settings(COLOR_HIGHLIGHTER_SETTINGS_NAME)).debug:
         print("ColorHighlighter: action=stop st=%s" % (st_helper.st_version()))
     ColorHighlighterPlugin.deinit()
 
