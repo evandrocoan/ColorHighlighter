@@ -1,5 +1,6 @@
 [
-    { "caption": "Color Highlighter: Choose color", "command" : "color_picker"},
-    { "caption": "Color Highlighter: Convert color", "command" : "color_convert"},
-    { "caption": "Color Highlighter: Go to variable definition", "command" : "go_to_var_definition" },
+    { "caption": "ColorHighlighter: Choose color", "command" : "color_picker"},
+    { "caption": "ColorHighlighter: Pick Color", "command" : "color_highlighter_pick_color"},
+    { "caption": "ColorHighlighter: Convert color", "command" : "color_convert"},
+    { "caption": "ColorHighlighter: Go to variable definition", "command" : "go_to_var_definition" },
 ]
